@@ -27,8 +27,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponce createUserProfile(Integer userId,String nom,
-                                                 String prenom,String email, UserRequest request) {
+    public UserResponce createUserProfile(Integer userId, String nom,
+                                          String prenom, String email, String phone, String cin, UserRequest request) {
         if (repository.existsByUserId(userId)) {
             throw new RuntimeException("Le profil interne existe déjà pour ce userId.");
         }
@@ -37,6 +37,8 @@ public class UserServiceImpl implements UserService {
         profile.setNom(nom);
         profile.setPrenom(prenom);
         profile.setEmail(email);
+        profile.setPhone(phone);
+        profile.setCin(cin);
         profile.setCreatedAt(LocalDateTime.now());
         if(profile.getMetierRole() == null ) {
             profile.setMetierRole(MetierRole.DEFAULT);
@@ -50,9 +52,9 @@ public class UserServiceImpl implements UserService {
         Users profile = repository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("Profil interne non trouvé."));
 
-        // Update only if value is not null
-        if(request.getTelephone() != null) profile.setTelephone(request.getTelephone());
+        if(request.getPhone() != null) profile.setPhone(request.getPhone());
         if(request.getCin() != null) profile.setCin(request.getCin());
+        if(request.getImage() != null) profile.setImage(request.getImage());
 
         profile.setUpdatedAt(LocalDateTime.now());
         repository.save(profile);

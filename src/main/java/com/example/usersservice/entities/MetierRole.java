@@ -2,9 +2,9 @@ package com.example.usersservice.entities;
 
 public enum MetierRole {
     DEFAULT,
-    MANAGER,
-    RESPONSABLEACHATS,
-    GESTIONNAIREDESTOCK,
+    Manager,
+    PROCUREMENT_MANAGER,
+    INVENTORY_MANAGER,
     ADMIN
 
 }

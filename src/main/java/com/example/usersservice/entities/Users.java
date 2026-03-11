@@ -12,9 +12,11 @@ public class Users {
 
     private String nom;
     private String prenom;
-    private String telephone;
+    private String phone;
     private String email;
     private String cin;
+    @Column(columnDefinition = "TEXT")
+    private String image;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 50)
@@ -37,16 +39,16 @@ public class Users {
     // ===== Constructors =====
     public Users() {}
 
-    public Users(Integer userId, String nom, String prenom, String telephone, String email,
+    public Users(Integer userId, String nom, String prenom, String phone, String email,
                        String adresse, String cin, LocalDate dateNaissance,
                        MetierRole metierRole, String departement, LocalDate dateEmbauche,
                        Integer superviseurId, Boolean disponible, ProfileStatus status,
                        String rejectionReason, LocalDateTime createdAt, LocalDate dernierConnex,
-                       LocalDateTime updatedAt, LocalDateTime validatedAt, Integer validatedBy) {
+                       LocalDateTime updatedAt, LocalDateTime validatedAt, Integer validatedBy, String image) {
         this.userId = userId;
         this.nom = nom;
         this.prenom = prenom;
-        this.telephone = telephone;
+        this.phone = phone;
         this.email = email;
         this.cin = cin;
         this.metierRole = metierRole;
@@ -60,6 +62,7 @@ public class Users {
         this.validatedAt = validatedAt;
         this.validatedBy = validatedBy;
         this.dernierConnex = dernierConnex;
+        this.image = image;
     }
 
     // ===== Getters & Setters =====
@@ -72,8 +75,13 @@ public class Users {
     public String getPrenom() { return prenom; }
     public void setPrenom(String prenom) { this.prenom = prenom; }
 
-    public String getTelephone() { return telephone; }
-    public void setTelephone(String telephone) { this.telephone = telephone; }
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
@@ -119,5 +127,13 @@ public class Users {
 
     public void setDernierConnex(LocalDate dernierConnex) {
         this.dernierConnex = dernierConnex;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }

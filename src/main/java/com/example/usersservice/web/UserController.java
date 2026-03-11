@@ -60,7 +60,9 @@ public class UserController {
         String nom = jwt.getClaim("nom");
         String prenom = jwt.getClaim("prenom");
         String email = jwt.getClaim("email");
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.createUserProfile(userId,nom,prenom,email,request));
+        String phone = jwt.getClaim("phone");
+        String cin = jwt.getClaim("cin");
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.createUserProfile(userId,nom,prenom,email, phone, cin, request));
     }
 
     @Operation(summary = "Mettre à jour un profil interne existant (Admin ou user profil)",
@@ -71,11 +73,10 @@ public class UserController {
     })
 
     @PreAuthorize(
-            "(#userId == authentication.principal.claims['userId']) and " +
-                    "(authentication.principal.claims['roles'].contains('ADMIN') or " +
-                    " authentication.principal.claims['roles'].contains('MANAGER') or " +
-                    " authentication.principal.claims['roles'].contains('RESPONSABLEACHATS') or " +
-                    " authentication.principal.claims['roles'].contains('GESTIONNAIREDESTOCK'))"
+            "authentication.principal.claims['roles'].contains('ADMIN') or " +
+                    "authentication.principal.claims['roles'].contains('Manager') or " +
+                    "authentication.principal.claims['roles'].contains(' PROCUREMENT_MANAGER') or " +
+                    "authentication.principal.claims['roles'].contains('InventoryManager')"
     )
     @PutMapping("/me")
     public ResponseEntity<UserResponce> updateMyProfilePartial(
@@ -95,11 +96,10 @@ public class UserController {
     })
 
     @PreAuthorize(
-            "(#userId == authentication.principal.claims['userId']) and " +
-                    "(authentication.principal.claims['roles'].contains('ADMIN') or " +
-                    " authentication.principal.claims['roles'].contains('MANAGER') or " +
-                    " authentication.principal.claims['roles'].contains('RESPONSABLEACHATS') or " +
-                    " authentication.principal.claims['roles'].contains('GESTIONNAIREDESTOCK'))"
+            "authentication.principal.claims['roles'].contains('ADMIN') or " +
+                    "authentication.principal.claims['roles'].contains('Manager') or " +
+                    "authentication.principal.claims['roles'].contains('PROCUREMENT_MANAGER') or " +
+                    "authentication.principal.claims['roles'].contains('InventoryManager')"
     )
     @GetMapping("/me")
     public ResponseEntity<UserResponce> getMyProfile(@AuthenticationPrincipal Jwt jwt) {
@@ -108,26 +108,30 @@ public class UserController {
         String nom = jwt.getClaim("nom");
         String prenom = jwt.getClaim("prenom");
         String email = jwt.getClaim("email");
+        String phone = jwt.getClaim("phone");
+        String cin = jwt.getClaim("cin");
 
         List<String> roles = jwt.getClaim("roles");
 
         String mainRole = roles.get(0);
-        MetierRole jwtRole = MetierRole.valueOf(mainRole);
+        MetierRole jwtRole;
+        try {
+            jwtRole = MetierRole.valueOf(mainRole.toUpperCase().replace(" ", "_"));
+        } catch (IllegalArgumentException e) {
 
+            jwtRole = MetierRole.DEFAULT;
+        }
 
         UserResponce profile;
 
         try {
             profile = service.getUserProfileById(userId);
-
-            // synchro role JWT <-> DB
             if (profile.getMetierRole() != jwtRole) {
                 service.updateMetierRole(userId, jwtRole);
                 profile.setMetierRole(jwtRole);
             }
 
         } catch (RuntimeException e) {
-
             UserRequest request = new UserRequest();
             request.setMetierRole(jwtRole);
 
@@ -136,13 +140,14 @@ public class UserController {
                     nom != null ? nom : "Inconnu",
                     prenom != null ? prenom : "Inconnu",
                     email,
+                    phone,
+                    cin,
                     request
             );
         }
 
         return ResponseEntity.ok(profile);
     }
-
 
     @PostMapping("/logout")
     public ResponseEntity<String> logout(@AuthenticationPrincipal Jwt jwt) {
@@ -200,6 +205,13 @@ public class UserController {
             @RequestParam(required = false) String rejectionReason) {
 
         return ResponseEntity.ok(service.changeProfileStatus(userId, status, adminId, rejectionReason));
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<String> deleteProfileByUserId(@PathVariable Integer userId) {
+        service.deleteUserProfile(userId);
+        return ResponseEntity.ok("Profil supprimé");
     }
 }
 

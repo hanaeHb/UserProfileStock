@@ -11,8 +11,9 @@ public class UserResponce {
     private String nom;
     private String prenom;
     private String email;
-    private String telephone;
+    private String phone;
     private String cin;
+    private String image;
     private MetierRole metierRole;
     private LocalDate dateEmbauche;
     private LocalDate dernierConnex;
@@ -27,18 +28,19 @@ public class UserResponce {
     public UserResponce() {}
 
     public UserResponce(Integer userId, String nom, String prenom, String email,
-                               String telephone, String cin,
+                               String phone, String cin,
                                LocalDate dernierConnex, MetierRole metierRole, LocalDate dateEmbauche,
                                Integer superviseurId, Boolean disponible,
                                ProfileStatus status, LocalDateTime createdAt,
                                LocalDateTime updatedAt, LocalDateTime validatedAt,
-                               Integer validatedBy) {
+                               Integer validatedBy, String image) {
         this.userId = userId;
         this.nom = nom;
         this.prenom = prenom;
         this.email = email;
-        this.telephone = telephone;
+        this.phone = phone;
         this.cin = cin;
+        this.image = image;
         this.dernierConnex = dernierConnex;
         this.metierRole = metierRole;
         this.dateEmbauche = dateEmbauche;
@@ -51,7 +53,7 @@ public class UserResponce {
         this.validatedBy = validatedBy;
     }
 
-    // Getters & Setters (نفس الطريقة)
+
     public Integer getUserId() { return userId; }
     public void setUserId(Integer userId) { this.userId = userId; }
 
@@ -64,8 +66,15 @@ public class UserResponce {
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
 
-    public String getTelephone() { return telephone; }
-    public void setTelephone(String telephone) { this.telephone = telephone; }
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+
 
 
     public String getCin() { return cin; }
@@ -106,4 +115,12 @@ public class UserResponce {
 
     public Integer getValidatedBy() { return validatedBy; }
     public void setValidatedBy(Integer validatedBy) { this.validatedBy = validatedBy; }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
 }

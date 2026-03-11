@@ -9,28 +9,28 @@ import java.time.LocalDateTime;
 public class UserRequest {
 
     //@Pattern(regexp = "^(\\+212|0)[5-7][0-9]{8}$")
-    private String telephone;
+    private String phone;
 
     private String email;
     private LocalDate dateNaissance;
     private String cin;
-
+    private String image;
     @NotNull
     private MetierRole metierRole;
-    @NotBlank
+
 
     private LocalDate dateEmbauche;
     private Integer superviseurId;
 
     public UserRequest() {}
 
-    public UserRequest(String telephone, String email,
+    public UserRequest(String phone, String email,
                               LocalDate dateNaissance, String cin,
                               MetierRole metierRole,
-                              LocalDate dateEmbauche, Integer superviseurId) {
-        this.telephone = telephone;
+                              LocalDate dateEmbauche, Integer superviseurId, String image) {
+        this.phone = phone;
         this.email = email;
-
+        this.image = image;
         this.dateNaissance = dateNaissance;
         this.cin = cin;
         this.metierRole = metierRole;
@@ -38,9 +38,13 @@ public class UserRequest {
         this.superviseurId = superviseurId;
     }
 
-    // Getters & Setters
-    public String getTelephone() { return telephone; }
-    public void setTelephone(String telephone) { this.telephone = telephone; }
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
@@ -60,4 +64,12 @@ public class UserRequest {
 
     public Integer getSuperviseurId() { return superviseurId; }
     public void setSuperviseurId(Integer superviseurId) { this.superviseurId = superviseurId; }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
 }

@@ -11,7 +11,7 @@ import java.util.List;
 public interface UserService {
     // Créer un profil interne pour un userId donné
     UserResponce createUserProfile(Integer userId, String nom,
-                                     String prenom, String email, UserRequest request);
+                                   String prenom, String email, String phone, String cin, UserRequest request);
     // Mettre à jour le profil interne existant
     UserResponce updateUserProfile(Integer userId, UserRequest request);
     // Récupérer un profil interne par userId
