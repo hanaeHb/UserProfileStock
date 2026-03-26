@@ -49,7 +49,7 @@ public class UserController {
 
         Integer userId;
         List<String> roles = jwt.getClaim("roles");
-        if (userIdParam != null) { // Admin spécifie un userId
+        if (userIdParam != null) {
             if (!roles.contains("ADMIN")) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
             }

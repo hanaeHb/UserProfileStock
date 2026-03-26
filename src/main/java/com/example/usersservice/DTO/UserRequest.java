@@ -1,7 +1,7 @@
 package com.example.usersservice.DTO;
 
 import com.example.usersservice.entities.MetierRole;
-import org.hibernate.annotations.processing.Pattern;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
